@@ -1,0 +1,748 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>أكاديمية تعلم اللغة العربية</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700&display=swap');
+    :root {
+      --primary: #1c7ea4;
+      --secondary: #1da083;
+      --accent: #d4a017;
+      --bg: #f6f9fb;
+      --text: #1b2b3a;
+      --muted: #6b7a86;
+      --card: #ffffff;
+      --shadow: 0 10px 30px rgba(0,0,0,0.08);
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      font-family: 'Cairo', system-ui, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.6;
+      position: relative;
+      min-height: 100vh;
+    }
+    body::before {
+      content: "";
+      position: fixed;
+      inset: 0;
+      background-image: radial-gradient(rgba(28,126,164,0.06) 1px, transparent 1px),
+                        radial-gradient(rgba(212,160,23,0.04) 1px, transparent 1px);
+      background-size: 50px 50px, 80px 80px;
+      background-position: 0 0, 20px 20px;
+      pointer-events: none;
+      z-index: -1;
+    }
+    a { color: inherit; text-decoration: none; }
+    header { background: var(--card); box-shadow: var(--shadow); position: sticky; top: 0; z-index: 5; }
+    nav { display: flex; align-items: center; justify-content: space-between; gap: 1rem; padding: 1rem 2rem; }
+    .logo-area { display: flex; flex-direction: column; }
+    .logo-title { font-weight: 700; font-size: 1.3rem; color: var(--primary); }
+    .logo-sub { font-size: 0.9rem; color: var(--muted); }
+    .nav-links { display: flex; gap: 1rem; }
+    .nav-links a { padding: 0.6rem 0.8rem; border-radius: 10px; transition: background 0.2s; font-weight: 600; }
+    .nav-links a:hover { background: rgba(28,126,164,0.1); }
+    .nav-actions { display: flex; gap: 0.5rem; }
+    .btn { border: none; cursor: pointer; padding: 0.75rem 1.1rem; border-radius: 12px; font-weight: 700; transition: transform 0.2s, box-shadow 0.2s; }
+    .btn.primary { background: linear-gradient(135deg, var(--primary), var(--secondary)); color: #fff; box-shadow: 0 6px 16px rgba(28,126,164,0.35); }
+    .btn.secondary { background: #fff; color: var(--primary); border: 2px solid rgba(28,126,164,0.2); }
+    .btn:hover { transform: translateY(-2px); }
+    main { padding: 2rem; max-width: 1200px; margin: auto; }
+    .hero { background: var(--card); padding: 2rem; border-radius: 16px; box-shadow: var(--shadow); display: grid; grid-template-columns: 2fr 1fr; gap: 1.5rem; align-items: center; }
+    .hero h1 { margin: 0 0 0.5rem; font-size: 1.9rem; }
+    .hero p { margin: 0.2rem 0; color: var(--muted); }
+    .progress { background: #e8f1f6; border-radius: 10px; overflow: hidden; height: 14px; margin: 0.8rem 0; }
+    .progress-bar { height: 100%; background: linear-gradient(135deg, var(--secondary), var(--primary)); width: 0%; transition: width 0.4s ease; }
+    section { margin: 2.5rem 0; }
+    .section-title { display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem; }
+    .section-title h2 { margin: 0; color: var(--primary); }
+    .card-grid { display: grid; gap: 1rem; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); }
+    .card { background: var(--card); border-radius: 14px; padding: 1.2rem; box-shadow: var(--shadow); display: flex; flex-direction: column; gap: 0.6rem; position: relative; overflow: hidden; }
+    .card small { color: var(--muted); }
+    .tag { display: inline-block; padding: 0.25rem 0.65rem; border-radius: 20px; font-size: 0.8rem; background: rgba(28,126,164,0.1); color: var(--primary); font-weight: 700; }
+    .status { font-weight: 700; }
+    .status.not { color: #c0392b; }
+    .status.progress { color: #d35400; }
+    .status.done { color: #27ae60; }
+    .accordion { background: var(--card); border-radius: 14px; box-shadow: var(--shadow); overflow: hidden; }
+    .accordion-item { border-top: 1px solid #eef3f6; }
+    .accordion-header { padding: 1rem; cursor: pointer; display: flex; align-items: center; justify-content: space-between; }
+    .accordion-body { padding: 0 1rem 1rem; display: none; }
+    .accordion-item.active .accordion-body { display: block; }
+    .flex { display: flex; gap: 0.75rem; align-items: center; flex-wrap: wrap; }
+    .filters { display: flex; gap: 0.5rem; flex-wrap: wrap; }
+    input, select { padding: 0.65rem 0.8rem; border-radius: 10px; border: 1px solid #d9e3ec; font-family: inherit; }
+    .tab { display: inline-block; padding: 0.6rem 1rem; border-radius: 12px; border: 1px solid rgba(28,126,164,0.2); cursor: pointer; font-weight: 700; color: var(--primary); background: #fff; }
+    .tab.active { background: var(--primary); color: #fff; box-shadow: var(--shadow); }
+    /* Wizard overlay */
+    #wizardOverlay { position: fixed; inset: 0; background: rgba(13,41,61,0.35); display: none; align-items: center; justify-content: center; padding: 1rem; z-index: 10; }
+    .wizard { background: #fff; max-width: 900px; width: 100%; border-radius: 18px; box-shadow: 0 20px 50px rgba(0,0,0,0.25); overflow: hidden; display: grid; grid-template-columns: 1fr; }
+    .wizard-header { background: linear-gradient(135deg, rgba(28,126,164,0.85), rgba(29,160,131,0.85)); color: #fff; padding: 1.5rem; }
+    .wizard-body { padding: 1.5rem; background: var(--bg); }
+    .language-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(120px, 1fr)); gap: 0.8rem; }
+    .lang-card { background: #fff; border-radius: 12px; padding: 0.9rem; text-align: center; border: 2px solid transparent; cursor: pointer; transition: transform 0.2s, border-color 0.2s; }
+    .lang-card:hover { transform: translateY(-3px); border-color: var(--primary); }
+    .lang-card.selected { border-color: var(--secondary); box-shadow: var(--shadow); }
+    .wizard-footer { display: flex; justify-content: space-between; align-items: center; padding-top: 1rem; }
+    .steps { display: flex; gap: 0.4rem; }
+    .step-dot { width: 12px; height: 12px; border-radius: 50%; background: #d9e3ec; }
+    .step-dot.active { background: var(--accent); }
+    .lesson-modal { position: fixed; inset: 0; background: rgba(0,0,0,0.4); display: none; align-items: center; justify-content: center; padding: 1rem; z-index: 20; }
+    .lesson-content { background: #fff; width: min(1000px, 100%); max-height: 90vh; overflow-y: auto; border-radius: 16px; padding: 1.5rem; box-shadow: var(--shadow); }
+    .lesson-top { display: flex; gap: 1rem; align-items: center; justify-content: space-between; }
+    .lesson-body { display: grid; grid-template-columns: 2fr 1fr; gap: 1rem; }
+    .lesson-block { background: var(--bg); padding: 1rem; border-radius: 12px; }
+    .lesson-sidebar { background: #fff; border-radius: 12px; box-shadow: var(--shadow); padding: 1rem; }
+    .badge { display: inline-block; padding: 0.2rem 0.55rem; border-radius: 10px; background: rgba(212,160,23,0.15); color: #9c6a00; font-weight: 700; }
+    .game-score { background: #fff; padding: 0.8rem 1rem; border-radius: 10px; display: inline-flex; align-items: center; gap: 0.5rem; box-shadow: var(--shadow); }
+    footer { text-align: center; padding: 1.5rem; color: var(--muted); }
+    @media (max-width: 900px) {
+      nav { flex-direction: column; align-items: flex-start; }
+      .hero { grid-template-columns: 1fr; }
+      .lesson-body { grid-template-columns: 1fr; }
+      main { padding: 1.5rem; }
+    }
+  </style>
+</head>
+<body>
+  <div id="wizardOverlay" aria-live="polite">
+    <div class="wizard">
+      <div class="wizard-header">
+        <h2 id="wizardTitle">اختر لغتك الأساسية</h2>
+        <p id="wizardSubtitle">سنستخدم هذه اللغة لعرض الأزرار والواجهة</p>
+      </div>
+      <div class="wizard-body" id="wizardBody"></div>
+      <div class="wizard-footer">
+        <div class="steps">
+          <div class="step-dot" data-step="1"></div>
+          <div class="step-dot" data-step="2"></div>
+          <div class="step-dot" data-step="3"></div>
+        </div>
+        <button class="btn primary" id="wizardNext">ابدأ رحلتك</button>
+      </div>
+    </div>
+  </div>
+
+  <div id="lessonModal" class="lesson-modal" role="dialog" aria-modal="true">
+    <div class="lesson-content">
+      <div class="lesson-top">
+        <div>
+          <h3 id="lessonTitle">عنوان الدرس</h3>
+          <p id="lessonObjective" class="muted">أهداف التعلم</p>
+        </div>
+        <button class="btn secondary" id="closeLesson">عودة إلى اللوحة</button>
+      </div>
+      <div class="lesson-body" id="lessonBody"></div>
+    </div>
+  </div>
+
+  <header>
+    <nav>
+      <div class="logo-area">
+        <span class="logo-title">أكاديمية تعلم اللغة العربية</span>
+        <span class="logo-sub">مخرج مشروع قيمنا حياة - المجال الثاني: العربية هوية وانتماء</span>
+      </div>
+      <div class="nav-links">
+        <a href="#currentPath">مسارك الحالي</a>
+        <a href="#library">مكتبة العربية</a>
+        <a href="#challenges">التحديات والألعاب</a>
+      </div>
+      <div class="nav-actions">
+        <button class="btn primary" id="continueBtn">متابعة الرحلة</button>
+        <button class="btn secondary" id="resetBtn">بدء رحلة جديدة</button>
+      </div>
+    </nav>
+  </header>
+
+  <main>
+    <section class="hero" id="hero">
+      <div>
+        <p class="badge" id="learnerBadge">مسار مختار</p>
+        <h1 id="heroTitle">مرحباً بعودتك!</h1>
+        <p id="heroDesc">اختر مسارك لتبدأ التعلم.</p>
+        <div class="progress" aria-label="progress">
+          <div class="progress-bar" id="progressBar"></div>
+        </div>
+        <button class="btn primary" id="continueJourney">تابع من حيث توقفت</button>
+      </div>
+      <div class="game-score">
+        <span>نقاطك اللغوية:</span>
+        <strong id="points">0</strong>
+        <span id="badgeLabel" class="badge">مبتدئ</span>
+      </div>
+    </section>
+
+    <section id="currentPath">
+      <div class="section-title">
+        <h2>مسارك الحالي</h2>
+        <span class="tag" id="currentBranchLabel">لم يتم اختيار مسار</span>
+      </div>
+      <div class="accordion" id="unitAccordion"></div>
+    </section>
+
+    <section id="library">
+      <div class="section-title">
+        <h2>مكتبة العربية الشاملة</h2>
+        <div class="filters">
+          <select id="filterBranch"></select>
+          <select id="filterLevel">
+            <option value="">كل المستويات</option>
+            <option value="مبتدئ">مبتدئ</option>
+            <option value="متوسط">متوسط</option>
+            <option value="متقدم">متقدم</option>
+          </select>
+          <select id="filterType">
+            <option value="">كل الأنواع</option>
+            <option value="فيديو">فيديو</option>
+            <option value="نص">درس نصي</option>
+            <option value="تفاعل">تمرين تفاعلي</option>
+            <option value="PDF">ملف PDF</option>
+          </select>
+          <input type="search" id="searchLibrary" placeholder="ابحث عن قاعدة، درس أو مهارة…">
+        </div>
+      </div>
+      <div class="card-grid" id="libraryGrid"></div>
+    </section>
+
+    <section id="challenges">
+      <div class="section-title">
+        <h2>التحديات والألعاب</h2>
+      </div>
+      <div class="card-grid" id="gameGrid"></div>
+    </section>
+
+    <section id="tabsSection">
+      <div class="section-title">
+        <h2>مسارات موجهة</h2>
+        <div>
+          <span class="tab active" data-tab="native">للناطقين بالعربية</span>
+          <span class="tab" data-tab="nonNative">لغير الناطقين بها</span>
+        </div>
+      </div>
+      <div id="tabContent" class="card"></div>
+    </section>
+  </main>
+
+  <footer>
+    © 2024 أكاديمية تعلم اللغة العربية – رحلة معرفية ذاتية بخطى ثابتة.
+  </footer>
+
+  <script>
+    // Content definitions
+    const branches = [
+      { id: 'nahw', title: 'النحو', desc: 'إتقان قواعد الجمل، المبتدأ والخبر، الأفعال وأنواعها.', units: 5, lessons: 20 },
+      { id: 'sarf', title: 'الصرف', desc: 'فهم جذور الكلمات، الأوزان الصرفية، وتصريف الأفعال.', units: 4, lessons: 16 },
+      { id: 'bala', title: 'البلاغة', desc: 'التشبيه والاستعارة والكناية لتحسين الأسلوب.', units: 3, lessons: 12 },
+      { id: 'imla', title: 'الإملاء وعلامات الترقيم', desc: 'قواعد الهمزات والتنوين وعلامات الوقف.', units: 3, lessons: 10 },
+      { id: 'reading', title: 'مهارات القراءة والفهم القرائي', desc: 'تحليل النصوص، استيعاب الأفكار، وأسئلة الفهم.', units: 4, lessons: 14 },
+      { id: 'listening', title: 'مهارات الاستماع', desc: 'تدريبات صوتية لفهم المتحدثين بمستويات مختلفة.', units: 2, lessons: 8 },
+      { id: 'speaking', title: 'مهارات المحادثة والتعبير الشفهي', desc: 'حوارات ونطق صحيح ومواقف حياتية.', units: 3, lessons: 12 },
+      { id: 'calligraphy', title: 'الخط العربي والكتابة اليدوية', desc: 'أساسيات الخطوط وكتابة الحروف بجمالية.', units: 2, lessons: 8 },
+      { id: 'vocab', title: 'المفردات وبناء الثروة اللغوية', desc: 'إثراء الحصيلة بكلمات جديدة ومرادفات.', units: 4, lessons: 15 },
+      { id: 'lit', title: 'الأدب والنصوص والشعر', desc: 'قراءة نصوص من عصور مختلفة وتحليلها.', units: 3, lessons: 9 },
+      { id: 'writing', title: 'التعبير الكتابي والإنشاء', desc: 'صياغة فقرات ومقالات وعرض أفكار بوضوح.', units: 3, lessons: 11 },
+      { id: 'nonNative', title: 'العربية للناطقين بغيرها – مسار خاص مكثف', desc: 'أساسيات مكثفة مع ترجمة صوتية وبصرية.', units: 4, lessons: 18 }
+    ];
+
+    const uiTexts = {
+      ar: {
+        start: 'ابدأ رحلتك',
+        continue: 'متابعة الرحلة',
+        reset: 'بدء رحلة جديدة',
+        step1Title: 'اختر لغتك الأساسية',
+        step1Subtitle: 'سنستخدم هذه اللغة لعرض الأزرار والواجهة',
+        step2Title: 'عرّف بنفسك',
+        step3Title: 'اختر الفرع الذي تريد تعلمه الآن',
+      },
+      en: {
+        start: 'Start your journey',
+        continue: 'Continue journey',
+        reset: 'Start fresh',
+        step1Title: 'Choose your main interface language',
+        step1Subtitle: 'We will use it for buttons and interface text',
+        step2Title: 'Tell us about yourself',
+        step3Title: 'Select a branch to explore now',
+      }
+    };
+
+    const sampleLessons = {
+      nahw: [
+        { id: 'nahw-1', title: 'المبتدأ والخبر', level: 'مبتدئ', type: 'نص' },
+        { id: 'nahw-2', title: 'كان وأخواتها', level: 'متوسط', type: 'تفاعل' },
+        { id: 'nahw-3', title: 'إن وأخواتها', level: 'متوسط', type: 'فيديو' },
+      ],
+      sarf: [
+        { id: 'sarf-1', title: 'ميزان الصرف', level: 'مبتدئ', type: 'نص' },
+        { id: 'sarf-2', title: 'أوزان الثلاثي المزيد', level: 'متوسط', type: 'PDF' },
+      ],
+    };
+
+    const libraryItems = [
+      { id: 'lib1', title: 'قاعدة همزة الوصل والقطع', branch: 'الإملاء وعلامات الترقيم', level: 'مبتدئ', type: 'نص' },
+      { id: 'lib2', title: 'تحليل قصيدة من العصر العباسي', branch: 'الأدب والنصوص والشعر', level: 'متقدم', type: 'فيديو' },
+      { id: 'lib3', title: 'تدريبات سمعية على الأصوات القصيرة', branch: 'مهارات الاستماع', level: 'مبتدئ', type: 'تفاعل' },
+      { id: 'lib4', title: 'بناء فقرة وصفية متماسكة', branch: 'التعبير الكتابي والإنشاء', level: 'متوسط', type: 'PDF' },
+      { id: 'lib5', title: 'مفردات عن البيئة والاستدامة', branch: 'المفردات وبناء الثروة اللغوية', level: 'متوسط', type: 'نص' },
+    ];
+
+    const games = [
+      { id: 'game1', title: 'كوّن جملة صحيحة', desc: 'اسحب الكلمات لوضعها في الترتيب المناسب.', action: () => addPoints(10) },
+      { id: 'game2', title: 'اختر الحركة المناسبة', desc: 'اختر التشكيل الصحيح للكلمة.', action: () => addPoints(12) },
+      { id: 'game3', title: 'اكتشف الخطأ الإملائي', desc: 'حدد الكلمة التي بها خطأ.', action: () => addPoints(8) },
+    ];
+
+    const unitsTemplate = [
+      { id: 'u1', title: 'الوحدة 1: أساسيات', lessons: [
+        { id: 'l1', title: 'تعريف القاعدة', objective: 'فهم الفكرة العامة للدرس.' },
+        { id: 'l2', title: 'أمثلة عملية', objective: 'رؤية القاعدة في جمل بسيطة.' },
+        { id: 'l3', title: 'تدريب سريع', objective: 'تطبيق القاعدة في تمارين قصيرة.' },
+      ]},
+      { id: 'u2', title: 'الوحدة 2: تطبيقات', lessons: [
+        { id: 'l4', title: 'قراءة نص قصير', objective: 'تحليل النص وتحديد القاعدة.' },
+        { id: 'l5', title: 'كتابة جملة صحيحة', objective: 'صياغة أمثلة خاصة بك.' },
+      ]},
+    ];
+
+    // State
+    let state = {
+      uiLanguage: 'ar',
+      level: '',
+      learnerType: '',
+      currentBranch: '',
+      completedLessons: [],
+      points: 0,
+    };
+
+    const wizardOverlay = document.getElementById('wizardOverlay');
+    const wizardBody = document.getElementById('wizardBody');
+    const wizardTitle = document.getElementById('wizardTitle');
+    const wizardSubtitle = document.getElementById('wizardSubtitle');
+    const wizardNext = document.getElementById('wizardNext');
+    const stepDots = document.querySelectorAll('.step-dot');
+    let currentStep = 1;
+    let tempSelections = { uiLanguage: 'ar', level: '', learnerType: '', branch: '' };
+
+    // Helpers
+    const saveState = () => {
+      Object.entries(state).forEach(([key, value]) => localStorage.setItem(key, JSON.stringify(value)));
+    };
+
+    const loadState = () => {
+      Object.keys(state).forEach(key => {
+        const value = localStorage.getItem(key);
+        if (value) state[key] = JSON.parse(value);
+      });
+    };
+
+    const updateUITexts = () => {
+      const t = uiTexts[state.uiLanguage] || uiTexts.en;
+      wizardNext.textContent = t.start;
+      document.getElementById('continueBtn').textContent = t.continue;
+      document.getElementById('resetBtn').textContent = t.reset;
+      document.getElementById('continueJourney').textContent = t.continue;
+    };
+
+    // Wizard rendering
+    const renderStep1 = () => {
+      wizardTitle.textContent = uiTexts[state.uiLanguage].step1Title;
+      wizardSubtitle.textContent = uiTexts[state.uiLanguage].step1Subtitle;
+      const languages = [
+        { code: 'ar', label: 'العربية' },
+        { code: 'en', label: 'English' },
+        { code: 'fr', label: 'Français' },
+        { code: 'tr', label: 'Türkçe' },
+        { code: 'ur', label: 'Urdu' },
+      ];
+      wizardBody.innerHTML = `<div class="language-grid">${languages.map(lang => `
+        <div class="lang-card ${tempSelections.uiLanguage === lang.code ? 'selected' : ''}" data-code="${lang.code}">
+          <div style="font-size:2rem;">🌐</div>
+          <strong>${lang.label}</strong>
+        </div>`).join('')}</div>`;
+      document.querySelectorAll('.lang-card').forEach(card => {
+        card.onclick = () => {
+          tempSelections.uiLanguage = card.dataset.code;
+          state.uiLanguage = tempSelections.uiLanguage;
+          updateUITexts();
+          renderStep1();
+        };
+      });
+    };
+
+    const renderStep2 = () => {
+      wizardTitle.textContent = uiTexts[state.uiLanguage].step2Title;
+      wizardSubtitle.textContent = 'اختر مستواك ونوع المتعلم لنقترح لك المحتوى الأنسب';
+      wizardBody.innerHTML = `
+        <div class="flex" style="margin-bottom:1rem;">
+          <div class="card" style="flex:1;">
+            <h4>اختر المستوى</h4>
+            <div class="flex">
+              ${['مبتدئ','متوسط','متقدم'].map(level => `
+                <button class="btn ${tempSelections.level === level ? 'primary' : 'secondary'}" data-level="${level}">${level}</button>
+              `).join('')}
+            </div>
+          </div>
+          <div class="card" style="flex:1;">
+            <h4>نوع المتعلم</h4>
+            <div class="flex">
+              ${[
+                'ناطق بالعربية يريد التعمق',
+                'متعلم عربي للناطقين بغيرها',
+                'معلم/مدرّس يتعلم مهارات لغوية'
+              ].map(type => `
+                <button class="btn ${tempSelections.learnerType === type ? 'primary' : 'secondary'}" data-type="${type}">${type}</button>
+              `).join('')}
+            </div>
+          </div>
+        </div>`;
+      wizardBody.querySelectorAll('[data-level]').forEach(btn => btn.onclick = () => {
+        tempSelections.level = btn.dataset.level;
+        renderStep2();
+      });
+      wizardBody.querySelectorAll('[data-type]').forEach(btn => btn.onclick = () => {
+        tempSelections.learnerType = btn.dataset.type;
+        renderStep2();
+      });
+    };
+
+    const renderStep3 = () => {
+      wizardTitle.textContent = uiTexts[state.uiLanguage].step3Title;
+      wizardSubtitle.textContent = 'اختر فرعك المفضل لتبدأ الرحلة فورًا';
+      wizardBody.innerHTML = `<div class="card-grid">${branches.map(b => `
+        <div class="card">
+          <div class="tag">${b.units} وحدات – ${b.lessons} درسًا تفاعليًا</div>
+          <h3>${b.title}</h3>
+          <p>${b.desc}</p>
+          <button class="btn ${tempSelections.branch === b.id ? 'primary' : 'secondary'}" data-branch="${b.id}">ابدأ هذا المسار</button>
+        </div>`).join('')}</div>`;
+      wizardBody.querySelectorAll('[data-branch]').forEach(btn => btn.onclick = () => {
+        tempSelections.branch = btn.dataset.branch;
+        renderStep3();
+      });
+    };
+
+    const renderWizard = () => {
+      stepDots.forEach(dot => dot.classList.toggle('active', Number(dot.dataset.step) === currentStep));
+      wizardOverlay.style.display = 'flex';
+      if (currentStep === 1) renderStep1();
+      if (currentStep === 2) renderStep2();
+      if (currentStep === 3) renderStep3();
+    };
+
+    const closeWizard = () => wizardOverlay.style.display = 'none';
+
+    // Dashboard rendering
+    const renderHero = () => {
+      const branch = branches.find(b => b.id === state.currentBranch);
+      const progress = calcProgress();
+      document.getElementById('heroTitle').textContent = branch ? `مرحباً! أنت الآن في مسار: ${branch.title}` : 'ابدأ باختيار مسار';
+      document.getElementById('heroDesc').textContent = `المستوى: ${state.level || 'غير محدد'} – نوع المتعلم: ${state.learnerType || 'غير محدد'}`;
+      document.getElementById('progressBar').style.width = `${progress}%`;
+      document.getElementById('learnerBadge').textContent = branch ? branch.title : 'مسار غير محدد';
+      document.getElementById('points').textContent = state.points;
+      document.getElementById('badgeLabel').textContent = state.points >= 40 ? 'بطل النحو' : state.points >= 20 ? 'مستكشف' : 'مبتدئ';
+    };
+
+    const calcProgress = () => {
+      const totalLessons = unitsTemplate.reduce((acc, u) => acc + u.lessons.length, 0);
+      return totalLessons ? Math.round((state.completedLessons.length / totalLessons) * 100) : 0;
+    };
+
+    const renderUnits = () => {
+      const container = document.getElementById('unitAccordion');
+      container.innerHTML = unitsTemplate.map(unit => {
+        const completedCount = unit.lessons.filter(l => state.completedLessons.includes(l.id)).length;
+        const status = completedCount === 0 ? '<span class="status not">لم يبدأ</span>' : completedCount === unit.lessons.length ? '<span class="status done">مكتمل</span>' : '<span class="status progress">قيد التقدم</span>';
+        return `
+          <div class="accordion-item" data-unit="${unit.id}">
+            <div class="accordion-header">
+              <div>
+                <strong>${unit.title}</strong>
+                <div style="color:var(--muted); font-size:0.9rem;">${unit.lessons.length} دروس</div>
+              </div>
+              <div>${status}</div>
+            </div>
+            <div class="accordion-body">
+              ${unit.lessons.map(lesson => {
+                const done = state.completedLessons.includes(lesson.id);
+                return `<div class="card" style="padding:0.8rem; margin-bottom:0.5rem;">
+                  <div class="flex" style="justify-content:space-between; align-items:center;">
+                    <div>
+                      <strong>${lesson.title}</strong>
+                      <div style="color:var(--muted); font-size:0.9rem;">${lesson.objective}</div>
+                    </div>
+                    <button class="btn ${done ? 'secondary' : 'primary'}" data-lesson="${lesson.id}">${done ? 'إعادة الاطلاع' : 'ابدأ الدرس'}</button>
+                  </div>
+                </div>`;
+              }).join('')}
+            </div>
+          </div>`;
+      }).join('');
+      container.querySelectorAll('.accordion-header').forEach(header => {
+        header.onclick = () => header.parentElement.classList.toggle('active');
+      });
+      container.querySelectorAll('[data-lesson]').forEach(btn => btn.onclick = () => openLesson(btn.dataset.lesson));
+    };
+
+    const renderLibrary = () => {
+      const branchOptions = ['كل الفروع', ...new Set(libraryItems.map(l => l.branch))];
+      document.getElementById('filterBranch').innerHTML = branchOptions.map(br => `<option value="${br === 'كل الفروع' ? '' : br}">${br}</option>`).join('');
+      const filters = {
+        branch: document.getElementById('filterBranch').value,
+        level: document.getElementById('filterLevel').value,
+        type: document.getElementById('filterType').value,
+        search: document.getElementById('searchLibrary').value.trim(),
+      };
+      const filtered = libraryItems.filter(item => {
+        return (!filters.branch || item.branch === filters.branch)
+          && (!filters.level || item.level === filters.level)
+          && (!filters.type || item.type === filters.type)
+          && (!filters.search || item.title.includes(filters.search));
+      });
+      document.getElementById('libraryGrid').innerHTML = filtered.map(item => `
+        <div class="card">
+          <div class="tag">${item.level}</div>
+          <h3>${item.title}</h3>
+          <small>${item.branch} – نوع: ${item.type}</small>
+          <button class="btn secondary">عرض الدرس</button>
+        </div>`).join('');
+    };
+
+    const renderGames = () => {
+      document.getElementById('gameGrid').innerHTML = games.map(g => `
+        <div class="card">
+          <h3>${g.title}</h3>
+          <p>${g.desc}</p>
+          <button class="btn primary" data-game="${g.id}">ابدأ التحدي</button>
+        </div>`).join('');
+      document.querySelectorAll('[data-game]').forEach(btn => btn.onclick = () => {
+        const game = games.find(g => g.id === btn.dataset.game);
+        alert('تم إنهاء التحدي!');
+        game.action();
+        renderHero();
+      });
+    };
+
+    const renderTabs = () => {
+      const tabContent = document.getElementById('tabContent');
+      tabContent.innerHTML = `
+        <h3>محتوى مخصص للناطقين بالعربية</h3>
+        <ul>
+          <li>تحليل نصوص تراثية</li>
+          <li>تحديات بلاغية متقدمة</li>
+          <li>كتابة نقدية وتعبير أدبي</li>
+        </ul>`;
+      document.querySelectorAll('.tab').forEach(tab => {
+        tab.onclick = () => {
+          document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+          tab.classList.add('active');
+          if (tab.dataset.tab === 'native') {
+            tabContent.innerHTML = `
+              <h3>محتوى مخصص للناطقين بالعربية</h3>
+              <ul>
+                <li>تحليل نصوص تراثية</li>
+                <li>تحديات بلاغية متقدمة</li>
+                <li>كتابة نقدية وتعبير أدبي</li>
+              </ul>`;
+          } else {
+            tabContent.innerHTML = `
+              <h3>محتوى موجه لغير الناطقين بالعربية</h3>
+              <ul>
+                <li>تمارين نطق مع تهجئة صوتية</li>
+                <li>ترجمات فورية لعبارات أساسية</li>
+                <li>مقاطع صوتية بطيئة مع تكرار</li>
+              </ul>`;
+          }
+        };
+      });
+    };
+
+    // Lesson modal
+    const openLesson = (lessonId) => {
+      const lesson = unitsTemplate.flatMap(u => u.lessons).find(l => l.id === lessonId);
+      const modal = document.getElementById('lessonModal');
+      document.getElementById('lessonTitle').textContent = lesson.title;
+      document.getElementById('lessonObjective').textContent = lesson.objective;
+      document.getElementById('lessonBody').innerHTML = `
+        <div class="lesson-block">
+          <h4>مقدمة مبسطة</h4>
+          <p>هذا الدرس يشرح ${lesson.title} مع أمثلة قصيرة.</p>
+          <ul>
+            <li>الجملة الأولى: <span style="color:var(--primary);">الطالبُ مجتهدٌ</span>.</li>
+            <li>الجملة الثانية: <span style="color:var(--secondary);">العلمُ نورٌ</span>.</li>
+          </ul>
+        </div>
+        <div class="lesson-block">
+          <h4>شرح القاعدة</h4>
+          <ul>
+            <li>تعريف ${lesson.title} بإيجاز.</li>
+            <li>خطوات تحديد المبتدأ والخبر في الجملة.</li>
+            <li>تطبيق القاعدة على أمثلة متنوعة.</li>
+          </ul>
+        </div>
+        <div class="lesson-block">
+          <h4>أمثلة تطبيقية</h4>
+          <p>لاحظ تلوين العناصر المهمة في الجمل التالية:</p>
+          <p><span style="color:var(--primary);">المعلمُ</span> <span style="color:var(--accent);">مخلصٌ</span> في عمله.</p>
+          <p><span style="color:var(--primary);">الشمسُ</span> <span style="color:var(--accent);">ساطعةٌ</span> هذا الصباح.</p>
+        </div>
+        <div class="lesson-block">
+          <h4>تمارين تفاعلية</h4>
+          <div>
+            <p>اختر الإجابة الصحيحة:</p>
+            <label><input type="radio" name="q1" value="correct"> الطالبُ مجتهدٌ (مبتدأ + خبر)</label><br>
+            <label><input type="radio" name="q1" value="wrong"> الطالبَ مجتهدٌ (خطأ إعرابي)</label>
+            <p id="feedback" style="color:var(--secondary);"></p>
+          </div>
+          <div style="margin-top:0.5rem;">
+            <p>إعادة ترتيب الكلمات لتكوين جملة: [مجتهد - الطالب - هذا]</p>
+            <button class="btn secondary" onclick="alert('ترتيب مقترح: الطالب هذا مجتهد')">عرض ترتيب صحيح</button>
+          </div>
+        </div>
+        <div class="lesson-block">
+          <h4>استمع وتعلّم</h4>
+          <audio controls src="audio/sample.mp3"></audio>
+        </div>
+        <div class="lesson-block">
+          <h4>ملخص الدرس</h4>
+          <ul>
+            <li>تعرّف على مكونات الجملة الاسمية.</li>
+            <li>تأكد من تطابق المبتدأ والخبر في التذكير والتأنيث.</li>
+            <li>تطبيق القاعدة على نصوص قصيرة.</li>
+          </ul>
+          <div class="flex" style="justify-content:space-between;">
+            <div>
+              <button class="btn secondary" onclick="navigateLesson(-1)">الدرس السابق</button>
+              <button class="btn secondary" onclick="navigateLesson(1)">الدرس التالي</button>
+            </div>
+            <button class="btn primary" onclick="completeLesson('${lesson.id}')">أنهيت هذا الدرس</button>
+          </div>
+        </div>
+        <div class="lesson-sidebar">
+          <h4>دروس الوحدة</h4>
+          <ul style="list-style:none; padding:0;">
+            ${unitsTemplate.flatMap(u => u.lessons).map(l => `<li style="margin:0.4rem 0;">${state.completedLessons.includes(l.id) ? '✅' : '⭕'} ${l.title}</li>`).join('')}
+          </ul>
+        </div>`;
+      modal.style.display = 'flex';
+      document.querySelectorAll('input[name="q1"]').forEach(r => r.onchange = () => {
+        document.getElementById('feedback').textContent = r.value === 'correct' ? 'إجابة صحيحة!' : 'حاول مرة أخرى';
+      });
+      modal.onclick = (e) => { if (e.target === modal) closeLesson(); };
+    };
+
+    const navigateLesson = (direction) => {
+      const lessons = unitsTemplate.flatMap(u => u.lessons);
+      const currentId = document.getElementById('lessonTitle').textContent;
+      const currentIndex = lessons.findIndex(l => l.title === currentId);
+      const next = lessons[currentIndex + direction] || lessons[currentIndex];
+      openLesson(next.id);
+    };
+
+    const completeLesson = (lessonId) => {
+      if (!state.completedLessons.includes(lessonId)) {
+        state.completedLessons.push(lessonId);
+        addPoints(5);
+        saveState();
+        renderHero();
+        renderUnits();
+      }
+      closeLesson();
+    };
+
+    const closeLesson = () => {
+      document.getElementById('lessonModal').style.display = 'none';
+    };
+
+    // Points
+    const addPoints = (value) => {
+      state.points += value;
+      saveState();
+    };
+
+    // Wizard navigation
+    wizardNext.onclick = () => {
+      if (currentStep === 1) {
+        state.uiLanguage = tempSelections.uiLanguage;
+        currentStep = 2;
+      } else if (currentStep === 2) {
+        if (!tempSelections.level || !tempSelections.learnerType) { alert('الرجاء اختيار المستوى ونوع المتعلم'); return; }
+        state.level = tempSelections.level;
+        state.learnerType = tempSelections.learnerType;
+        currentStep = 3;
+      } else {
+        if (!tempSelections.branch) { alert('اختر مسارًا للبدء'); return; }
+        state.currentBranch = tempSelections.branch;
+        saveState();
+        closeWizard();
+        initDashboard();
+      }
+      renderWizard();
+      updateUITexts();
+    };
+
+    // Journey reset
+    const resetJourney = () => {
+      if (!confirm('هل أنت متأكد من إعادة تعيين رحلتك؟')) return;
+      localStorage.clear();
+      state = { uiLanguage: 'ar', level: '', learnerType: '', currentBranch: '', completedLessons: [], points: 0 };
+      tempSelections = { uiLanguage: 'ar', level: '', learnerType: '', branch: '' };
+      currentStep = 1;
+      renderWizard();
+    };
+
+    document.getElementById('resetBtn').onclick = resetJourney;
+
+    // Lesson modal close
+    document.getElementById('closeLesson').onclick = closeLesson;
+
+    // Library filters
+    ['filterBranch','filterLevel','filterType','searchLibrary'].forEach(id => {
+      document.getElementById(id).addEventListener('input', renderLibrary);
+    });
+
+    document.getElementById('continueBtn').onclick = () => closeWizard();
+    document.getElementById('continueJourney').onclick = () => {
+      const nextLesson = unitsTemplate.flatMap(u => u.lessons).find(l => !state.completedLessons.includes(l.id)) || unitsTemplate[0].lessons[0];
+      openLesson(nextLesson.id);
+    };
+
+    // Initialization
+    const initDashboard = () => {
+      updateUITexts();
+      renderHero();
+      renderUnits();
+      renderLibrary();
+      renderGames();
+      renderTabs();
+      document.getElementById('currentBranchLabel').textContent = branches.find(b => b.id === state.currentBranch)?.title || 'لم يتم اختيار مسار';
+    };
+
+    const bootstrap = () => {
+      loadState();
+      if (!localStorage.getItem('uiLanguage')) {
+        wizardOverlay.style.display = 'flex';
+        renderWizard();
+      } else {
+        // ask to continue or reset
+        if (state.currentBranch) {
+          if (confirm('لديك رحلة سابقة، هل تريد المتابعة؟')) {
+            initDashboard();
+          } else {
+            resetJourney();
+          }
+        } else {
+          wizardOverlay.style.display = 'flex';
+          renderWizard();
+        }
+      }
+      initDashboard();
+    };
+
+    bootstrap();
+  </script>
+</body>
+</html>
