@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>استمارة الاستمارة الزيارات التبادلية التبادلية بين المعلمات</title>
+  <title>استمارة الاستمارة الزيارات التبادلية التبادلية بين معلمات الثانوية الأولى بالحليله</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800;900&display=swap" rel="stylesheet">
@@ -1265,6 +1265,161 @@ border-bottom:1px solid var(--grid);    }
       }
     }
 
+  
+    /* التعديل الختامي: تكبير الملاحظات والتوصيات وتثبيت أسماء الإدارة أسفل الصفحة */
+    .note-card .body{
+      min-height:78px!important;
+      padding:5px 8px!important;
+    }
+    .note-card .body textarea{
+      min-height:68px!important;
+      height:68px!important;
+      line-height:1.45!important;
+      padding:3px 5px!important;
+      overflow:auto!important;
+    }
+    .print-sheet .note-card .body,
+    .print-clone .note-card .body{
+      min-height:78px!important;
+    }
+    .print-sheet .note-card .body .print-textarea-value,
+    .print-clone .note-card .body .print-textarea-value{
+      min-height:68px!important;
+      height:68px!important;
+      line-height:1.45!important;
+      padding:3px 5px!important;
+      overflow:hidden!important;
+    }
+
+    .sign-table-two{
+      margin-top:0!important;
+    }
+
+    .admin-fixed-footer{
+      position:absolute!important;
+      right:7.2mm!important;
+      left:7.2mm!important;
+      bottom:7.5mm!important;
+      display:grid!important;
+      grid-template-columns:1fr 1fr!important;
+      gap:16mm!important;
+      align-items:end!important;
+      z-index:4!important;
+      direction:rtl!important;
+      pointer-events:none!important;
+    }
+    .admin-fixed-person{
+      text-align:center!important;
+      display:flex!important;
+      flex-direction:column!important;
+      align-items:center!important;
+      justify-content:flex-end!important;
+      gap:3px!important;
+      min-height:32px!important;
+    }
+    .admin-fixed-role{
+      display:block!important;
+      color:#1b3d49!important;
+      font-size:10.2px!important;
+      font-weight:900!important;
+      line-height:1.25!important;
+      white-space:nowrap!important;
+    }
+    .admin-fixed-name{
+      display:block!important;
+      color:#15242b!important;
+      font-size:10.5px!important;
+      font-weight:900!important;
+      line-height:1.25!important;
+      white-space:nowrap!important;
+    }
+
+    .print-sheet .admin-fixed-footer,
+    .print-clone .admin-fixed-footer{
+      position:absolute!important;
+      right:7.2mm!important;
+      left:7.2mm!important;
+      bottom:7.5mm!important;
+      display:grid!important;
+      grid-template-columns:1fr 1fr!important;
+      gap:16mm!important;
+      z-index:4!important;
+    }
+
+    @media print{
+      .note-card .body{
+        min-height:78px!important;
+      }
+      .note-card .body textarea,
+      .note-card .body .print-textarea-value{
+        min-height:68px!important;
+        height:68px!important;
+        line-height:1.45!important;
+        padding:3px 5px!important;
+        overflow:hidden!important;
+      }
+      .admin-fixed-footer{
+        position:absolute!important;
+        right:7.2mm!important;
+        left:7.2mm!important;
+        bottom:7.5mm!important;
+        display:grid!important;
+        grid-template-columns:1fr 1fr!important;
+        gap:16mm!important;
+        z-index:4!important;
+      }
+    }
+
+  
+    /* شريط علوي ثابت ومضغوط مع إبقاء نصوص الأزرار */
+    .site-bar{
+      position:sticky!important;
+      top:0!important;
+      z-index:9990!important;
+      padding:7px 14px!important;
+      box-shadow:0 5px 16px rgba(10,91,99,.14)!important;
+    }
+    .site-bar-inner{
+      min-height:38px!important;
+      gap:8px!important;
+    }
+    .site-title{
+      font-size:15px!important;
+      line-height:1.2!important;
+      font-weight:900!important;
+    }
+    .site-actions{
+      gap:7px!important;
+    }
+    .site-actions .btn{
+      min-height:32px!important;
+      padding:6px 10px!important;
+      border-radius:9px!important;
+      font-size:11px!important;
+      line-height:1!important;
+      font-weight:900!important;
+    }
+
+    @media (max-width:920px){
+      .site-bar{
+        padding:6px 10px!important;
+      }
+      .site-title{
+        font-size:13.5px!important;
+      }
+      .site-actions .btn{
+        min-height:30px!important;
+        padding:5px 8px!important;
+        font-size:10px!important;
+      }
+    }
+
+    @media print{
+      .site-bar{
+        display:none!important;
+      }
+    }
+
   </style>
 </head>
 <body>
@@ -1381,29 +1536,18 @@ border-bottom:1px solid var(--grid);    }
                 <div class="sig-actions"><button type="button" class="sig-clear" data-target="sig2">مسح التوقيع</button></div>
               </td>
             </tr>
-            <tr>
-              <th>وكيلة الشؤون التعليمية</th>
-              <th>مديرة المدرسة</th>
-            </tr>
-            <tr class="sign-name-row fixed-sign-names">
-              <td><span class="fixed-name">أ. شيخة حبيب الحمود</span></td>
-              <td><span class="fixed-name">أ. سهاد أحمد الكشي</span></td>
-            </tr>
-            <tr>
-              <td class="sig-cell">
-                <div class="sig-box">
-                  <canvas id="sig3" class="sig-canvas"></canvas>
-                </div>
-                <div class="sig-actions"><button type="button" class="sig-clear" data-target="sig3">مسح التوقيع</button></div>
-              </td>
-              <td class="sig-cell">
-                <div class="sig-box">
-                  <canvas id="sig4" class="sig-canvas"></canvas>
-                </div>
-                <div class="sig-actions"><button type="button" class="sig-clear" data-target="sig4">مسح التوقيع</button></div>
-              </td>
-            </tr>
           </table>
+
+          <div class="admin-fixed-footer" aria-label="اعتماد الإدارة المدرسية">
+            <div class="admin-fixed-person">
+              <span class="admin-fixed-role">وكيلة الشؤون التعليمية</span>
+              <strong class="admin-fixed-name">أ. شيخة حبيب الحمود</strong>
+            </div>
+            <div class="admin-fixed-person">
+              <span class="admin-fixed-role">مديرة المدرسة</span>
+              <strong class="admin-fixed-name">أ. سهاد أحمد الكشي</strong>
+            </div>
+          </div>
         </div>
       </section>
     </div>
@@ -1563,7 +1707,7 @@ border-bottom:1px solid var(--grid);    }
       ctx.clearRect(0,0,canvas.width,canvas.height);
     }
 
-    ['sig1','sig2','sig3','sig4'].forEach(setupSignature);
+    ['sig1','sig2'].forEach(setupSignature);
 
 
     // منطق الطباعة/PDF من ملف 78 مع تكييفه لاستمارة الزيارات التبادلية
